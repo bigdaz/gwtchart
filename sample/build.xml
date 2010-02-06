@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<project name="GwtChartSample" default="build" basedir=".">
+  <property name="gwt.sdk" location="/Users/daz/dev/gwt-2.0.0"/>
+  <property name="gwtchart.path" location=".."/>
+
+  <path id="project.class.path">
+    
+    <fileset dir="${gwt.sdk}">
+      <include name="gwt-user.jar"/>
+      <include name="gwt-dev.jar"/>
+      <include name="gwt-servlet.jar"/>
+    </fileset>
+
+    <fileset dir="${gwtchart.path}/lib/client" includes="*.jar"/>
+    <fileset dir="${gwtchart.path}/lib/server" includes="*.jar"/>
+  </path>
+
+  <target name="clean">
+    <delete dir="war"/>
+  </target>
+
+  <target name="clean-classes">
+    <delete dir="war/WEB-INF/classes"/>
+  </target>
+
+  <target name="prepare-war">
+    <copy todir="war">
+      <fileset dir="src/web" includes="**"/>
+    </copy>
+    <copy todir="war/WEB-INF/lib" flatten="true">
+      <fileset dir="${gwt.sdk}" includes="gwt-servlet.jar"/>
+      <fileset dir="${gwtchart.path}/lib/server"/>
+    </copy>
+    <mkdir dir="war/WEB-INF/classes"/>
+  </target>
+
+  <target name="javac" depends="prepare-war" description="Compile java source">
+    <mkdir dir="war/WEB-INF/classes"/>
+    <!-- TODO - Make the GwtChart jar and reference it -->
+    <javac srcdir="${gwtchart.path}/src/java" includes="**" encoding="utf-8" destdir="war/WEB-INF/classes"
+           source="1.5" target="1.5" nowarn="true" debug="true" debuglevel="lines,vars,source">
+      <classpath refid="project.class.path"/>
+    </javac>
+    <!-- Copy resources (ui.xml etc) -->
+    <copy todir="war/WEB-INF/classes">
+      <fileset dir="${gwtchart.path}/src/java" excludes="**/*.java"/>
+    </copy>
+
+    <javac srcdir="src/java" includes="**" encoding="utf-8" destdir="war/WEB-INF/classes"
+           source="1.5" target="1.5" nowarn="true" debug="true" debuglevel="lines,vars,source">
+      <classpath refid="project.class.path"/>
+    </javac>
+
+    <!-- Copy resources (ui.xml etc) -->
+    <copy todir="war/WEB-INF/classes">
+      <fileset dir="src/java" excludes="**/*.java"/>
+    </copy>
+  </target>
+
+  <target name="devmode" depends="javac" description="Run development mode">
+    <java failonerror="true" fork="true" classname="com.google.gwt.dev.DevMode">
+      <classpath>
+        <pathelement location="src/java"/>
+        <pathelement location="${gwtchart.path}/src/java"/>
+        <pathelement location="war/WEB-INF/classes"/>
+        <path refid="project.class.path"/>
+      </classpath>
+      <jvmarg value="-Xmx256M"/>
+      <!-- Additional arguments like -style PRETTY or -logLevel DEBUG -->
+      <arg value="com.bigdaz.gwtchart.sample.GwtChartSample"/>
+    </java>
+  </target>
+
+  <target name="gwtc" depends="javac" description="GWT compile to JavaScript">
+    <java failonerror="true" fork="true" classname="com.google.gwt.dev.Compiler">
+      <classpath>
+        <pathelement location="src/java"/>
+        <pathelement location="war/WEB-INF/classes"/>
+        <path refid="project.class.path"/>
+      </classpath>
+      <!-- add jvmarg -Xss16M or similar if you see a StackOverflowError -->
+      <jvmarg value="-Xmx256M"/>
+      <!-- Additional arguments like -style PRETTY or -logLevel DEBUG -->
+      <arg value="com.bigdaz.gwtchart.sample.GwtChartSample"/>
+    </java>
+  </target>
+
+  <target name="build" depends="javac" description="Build this project" />
+
+</project>
