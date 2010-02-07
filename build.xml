@@ -1,33 +1,30 @@
 <project name="raphaelgwt">
     <!-- Configure path to GWT SDK -->
     <property name="gwt.sdk" location="/Users/daz/dev/gwt-2.0.0"/>
-    <!-- Configure path to RaphaelGWT widget -->
-    <property name="raphaelgwt.path" location="."/>
 
     <path id="project.class.path">
-      <!--<pathelement location="${raphaelgwt.path}/src"/>-->
-      <!--<pathelement location="war/WEB-INF/classes"/>-->
       <pathelement location="${gwt.sdk}/gwt-user.jar"/>
-      <!--<fileset dir="${gwt.sdk}" includes="gwt-dev*.jar"/>-->
-      <!-- Add any additional non-server libs (such as JUnit) -->
-      <!--<fileset dir="war/WEB-INF/lib" includes="**/*.jar"/>-->
     </path>
+
+    <target name="clean">
+        <delete dir="build"/>
+    </target>
 
     <target name="javac" description="Compile java source">
       <mkdir dir="build/classes"/>
-      <javac srcdir="src" includes="**" encoding="utf-8"
+      <javac srcdir="src/java" includes="**" encoding="utf-8"
           destdir="build/classes"
           source="1.5" target="1.5" nowarn="true"
           debug="true" debuglevel="lines,vars,source">
         <classpath refid="project.class.path"/>
       </javac>
       <copy todir="build/classes">
-        <fileset dir="src"/>
+        <fileset dir="src/java"/>
       </copy>
     </target>
 
     <target name="jar" depends="javac">
-        <jar jarfile="build/raphael-gwt.jar">
+        <jar jarfile="build/gwtchart.jar">
             <fileset dir="build/classes"/>
         </jar>
     </target>
