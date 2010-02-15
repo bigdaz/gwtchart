@@ -51,7 +51,7 @@ public class Gauge extends Raphael {
 
         needle = new Path(needlePath);
         needle.attr("stroke", "none");
-        needle.attr("fill", "0-#552200-#AA9977:35-#552200");
+        needle.attr("fill", "0-#666666-#EEEEEE:35-#666666");
         needle.scale(scaleFactor, scaleFactor, 0, 0);
 
         double rotation = (initialValue * 120) - 60;
