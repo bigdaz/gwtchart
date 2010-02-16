@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module rename-to='GwtChartSample'>
-  <inherits name='com.google.gwt.user.User'/>
+    <inherits name='com.google.gwt.user.User'/>
 
-  <inherits name='com.google.gwt.user.theme.standard.Standard'/>
-
+    <inherits name='com.google.gwt.user.theme.standard.Standard'/>
     <inherits name='com.bigdaz.gwtchart.GwtChart'/>
     <!--<inherits name='com.hydro4ge.raphaelgwt.RaphaelGWT' />-->
 
-  <entry-point class='com.bigdaz.gwtchart.sample.client.Loader'/>
+    <entry-point class='com.bigdaz.gwtchart.sample.client.Loader'/>
 
-  <source path='client'/>
+    <source path='client'/>
 
 </module>
